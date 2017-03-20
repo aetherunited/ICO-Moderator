@@ -47,23 +47,6 @@ class Admin(util.Listener):
 
 
 @util.listenerfinder.register
-class GetInvite(util.Listener):
-
-    def __init__(self):
-        super().__init__()
-
-    def is_triggered_private_message(self, msg: discord.Message):
-        return re.search(r'invite url', msg.content)
-
-    async def on_private_message(self, msg: discord.Message):
-        await self.client.send_message(msg.channel, 'Add me to your server at {url}'.format(
-            url=resources.URL.format(bot_id=self.client.user.id, scope='bot', permissions='0x00001c00')))
-
-    def get_help(self, help):
-        return util.Help('Private Message', 'invite url', 'Get the URL to invite this bot to your server.')
-
-
-@util.listenerfinder.register
 class Help(util.Listener):
 
     def is_triggered_private_message(self, msg: discord.Message):
