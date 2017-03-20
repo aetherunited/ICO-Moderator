@@ -1,0 +1,21 @@
+# Sublime Text
+*.sublime-*
+
+# Compyled files
+*/__pycache__/
+*.pyc
+
+# PyCharm
+.idea/
+*.ipr
+*.iml
+
+# Configuration and startup scripts
+/src/cfg/*
+!/src/cfg/readme.md
+
+# Logging
+/log/*
+
+# Heroku config
+.env
