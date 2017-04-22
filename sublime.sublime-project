@@ -1,0 +1,25 @@
+{
+	"build_systems":
+	[
+		{
+			"cmd":
+			[
+				"python",
+				"-u",
+				"main.py",
+				"MjIxODIyNTA2NjI4MDIyMjcz.Cq8-ew.5M4xAXMTDSIEKZ4lW1femN6spEA"
+			],
+			"name": "Run main bot"
+		},
+		{
+			"cmd":
+			[
+				"python",
+				"-u",
+				"main.py",
+				"MjMxODI1OTQ1NDIwMzY1ODI0.CtNjYA.JY9EKusNztBPQDKTkZ6LjE0Y10c"
+			],
+			"name": "Run test bot"
+		}
+	]
+}

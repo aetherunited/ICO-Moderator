@@ -1,0 +1,60 @@
+{
+
+  "res": {
+    "aun-regex": "(?i)(?:aether united|aether|aun)",
+    "eth-regex": "(?i)(?:[^a]eth|[^a]ether|[^a]ethereum)",
+    "blockchain-regex": "(?i)(?:blockchain)",
+    "invest-verb-regex": "(?i)(?:invest|donate|sponsor)",
+    "join-verb-regex": "(?i)(?:join)"
+  },
+
+  "subjects": {
+
+    "aether-united": {
+      "identifier": "{aun-regex}",
+      "responses": {
+        "what": "Aether United is ..."
+      }
+    },
+
+    "runs-aether-united": {
+      "identifier": "runs?.*{aun-regex}",
+      "responses": {
+        "who": "Aether United is run by ..."
+      }
+    },
+
+    "invest-aether-united": {
+      "identifier": "{invest-verb-regex}.*{aun-regex}",
+      "responses": {
+        "why": "You should invest in us because ...",
+        "how": "You can help us out by ..."
+      }
+    },
+
+    "join-aether-united": {
+      "identifier": "{join-verb-regex}.*{aun-regex}",
+      "responses": {
+        "why": "You should join us because ...",
+        "where": "You can join us by ...",
+        "how": "You can join us by ..."
+      }
+    },
+
+    "blockchain": {
+      "identifier": "(?:{eth-regex})|(?:{blockchain-regex})",
+      "responses": {
+        "what": "Ethereum is ..."
+      }
+    },
+
+    "blockchain-explanation": {
+      "identifier": " (?:{eth-regex}|{blockchain-regex}).*work",
+      "responses": {
+        "how": "Ethereum and other blockchains work by ..."
+      }
+    }
+
+  }
+
+}
