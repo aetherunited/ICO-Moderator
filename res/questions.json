@@ -1,7 +1,7 @@
 {
 
   "res": {
-    "aun-regex": "(?i)(?:aether united|aether|aun)",
+    "aun-regex": "(?i)(?:aetherunited|aether united|aether|aun)",
     "eth-regex": "(?i)(?:[^a]eth|[^a]ether|[^a]ethereum)",
     "blockchain-regex": "(?i)(?:blockchain)",
     "invest-verb-regex": "(?i)(?:invest|donate|sponsor)",
@@ -9,6 +9,19 @@
   },
 
   "subjects": {
+
+    "aun-5000": {
+      "identifier": "(?i){aun-regex}[ -]?5000",
+      "responses": {
+        "what": "I am AetherUnited-5000, the best bot in the world. I can answer your questions and make you smarter, but I cannot make you a sandwich. `sudo` won't work. Trust me.",
+        "who": "I am AetherUnited-5000, the best bot in the world. I can answer your questions and make you smarter, but I cannot make you a sandwich. `sudo` won't work. Trust me.",
+        "where": "I am located on a server on someone's computer somewhere in the world. If you're looking for my code however, it is at https://github.com/Plenglin/AUN-5000."
+      }
+    }
+
+  },
+
+  "beta-subjects": {
 
     "aether-united": {
       "identifier": "{aun-regex}",
