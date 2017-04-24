@@ -144,8 +144,9 @@ def update_questions():
         for q in SUBJECTS[s].questions:
             q.update_msgs_since()
 
+
 def msg_to_sentences(msg):
-    return re.split('[.?!:] *', msg)
+    return re.split('[.?!:,)>}\-~] *', msg)
 
 
 def is_question(sentence):
