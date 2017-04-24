@@ -23,11 +23,3 @@ class TestQuestionUtils(TestCase):
         self.assertEqual(qa.contains_question('Where is ETH?'), ('Where is ETH?', 'where'))
         self.assertEqual(qa.contains_question('Here we go. Time to do things.'), (False, None))
         self.assertEqual(qa.contains_question('its k bb. sall guud.'), (False, None))
-
-    def test_match_subject(self):
-        self.assertEqual(qa.match_subject('how do i invest in aether')[0], 'invest-aether-united')
-        self.assertEqual(qa.match_subject('who runs aun')[0], 'runs-aether-united')
-        self.assertEqual(qa.match_subject('how do i join aether')[0], 'join-aether-united')
-        self.assertEqual(qa.match_subject('where do i join aether')[0], 'join-aether-united')
-        self.assertEqual(qa.match_subject('what is blockchain')[0], 'blockchain')
-        self.assertEqual(qa.match_subject('how does blockchain work')[0], 'blockchain-explanation')
