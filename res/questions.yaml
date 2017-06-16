@@ -36,7 +36,7 @@ subjects:
     identifier: '{keywords.crowdsale}'
     responses:
       when: >
-         The crowdsale will start in early July.
+         The crowdsale will start in early August.
 
   participate-aun:
     identifier: '{keywords.participate}.*{keywords.aun}'
