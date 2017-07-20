@@ -11,7 +11,7 @@ import util
 
 URL_REGEX = r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
 URL_SOURCE = 'https://raw.githubusercontent.com/MyEtherWallet/ethereum-lists/master/urls-darklist.json'
-UPDATE_PERIOD = 60*60*6
+UPDATE_PERIOD = 3600  # Every hour
 
 log = logging.getLogger(__name__)
 
@@ -23,7 +23,7 @@ class GetUrlsTask(util.ScheduledTask):
 
     async def task(self):
         while True:
-            log.info('updainting url blacklist...')
+            log.info('updating url blacklist...')
             response = requests.get(URL_SOURCE)
             content = response.content.decode()
             GetUrlsTask.blacklist = re.findall(r'"id": ?"(.+)"', content)  # because it errors with proper json.loads...
@@ -36,7 +36,7 @@ class URLModerator(util.Listener):
 
     def is_triggered_message(self, msg: discord.Message):
         for blacklist_url in GetUrlsTask.blacklist:
-            if blacklist_url in msg.content.lower():
+            if re.search(r'{}\b'.format(blacklist_url), msg.content, flags=re.IGNORECASE):
                 return True
 
     async def on_message(self, msg: discord.Message):
