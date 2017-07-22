@@ -53,9 +53,10 @@ class URLModerator(util.Listener):
 class AddressDeletor(util.Listener):
 
     def is_triggered_message(self, msg: discord.Message):
-        if msg.author:
-            log.debug('message from person on crypto address whitelist')
-            return False
+        for role in msg.author.roles:
+            if any(r.name.lower() == 'addressannouncer' for r in msg.author.roles):
+                log.debug('message from person on crypto address whitelist, not moderating for addresses')
+                return False
         if re.search(r'[0-9a-f]{38,45}', msg.content, flags=re.IGNORECASE):
             return True
 
