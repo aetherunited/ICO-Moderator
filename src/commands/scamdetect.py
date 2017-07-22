@@ -1,13 +1,10 @@
 import asyncio
-import discord
-import itertools
-import requests
-import json
-from urllib.parse import urlparse
 import logging
 import re
 
-import resources
+import discord
+import requests
+
 import util
 
 URL_REGEX = r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'

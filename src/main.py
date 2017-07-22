@@ -91,7 +91,7 @@ def main():
     async def on_ready():
         main_logger.info('Logged in as ' + client.user.name)
         main_logger.info('Add me to your server using {url}'.format(
-            url=resources.URL.format(bot_id=client.user.id, scope='bot', permissions='0x00001c00'))
+            url=resources.URL.format(bot_id=client.user.id, scope='bot', permissions='11264'))
         )
         await commandreg.on_start()
 
