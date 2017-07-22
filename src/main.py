@@ -19,7 +19,7 @@ import util
 
 FORMAT = '%(asctime)s - %(name)s:%(module)s:%(lineno)d - %(levelname)s: %(message)s'
 
-main_logger = logging.getLogger('lennybot_main')
+main_logger = logging.getLogger(__name__)
 
 
 class IllegalArgumentException(Exception):

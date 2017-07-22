@@ -43,7 +43,7 @@ class URLModerator(util.Listener):
     async def on_message(self, msg: discord.Message):
         log.info('detected scam URL in message, deleting', msg.content)
         await self.client.delete_message(msg)
-        notice = await self.client.send_message(msg.channel, '_A message that contained a suspicious URL was deleted._')
+        notice = await self.client.send_message(msg.channel, '_A message from {} that contained a suspicious URL was deleted._'.format(msg.author.mention))
         await asyncio.sleep(10)
         await self.client.delete_message(notice)
         return
@@ -53,16 +53,16 @@ class URLModerator(util.Listener):
 class AddressDeletor(util.Listener):
 
     def is_triggered_message(self, msg: discord.Message):
-        if msg.author.id in resources.ETH_WHITELIST:
+        if msg.author:
             log.debug('message from person on crypto address whitelist')
             return False
-        if re.search(r'[0-9a-f]{38,45}', msg.content):
+        if re.search(r'[0-9a-f]{38,45}', msg.content, flags=re.IGNORECASE):
             return True
 
     async def on_message(self, msg: discord.Message):
         log.info('detected potential scam address in message, deleting', msg.content)
         await self.client.delete_message(msg)
-        notice = await self.client.send_message(msg.channel, '_A message that contained a crypto address was deleted._')
+        notice = await self.client.send_message(msg.channel, '_A message from {} that contained an ethereum address was deleted._'.format(msg.author.mention))
         await asyncio.sleep(10)
         await self.client.delete_message(notice)
         return
