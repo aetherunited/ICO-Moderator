@@ -7,6 +7,7 @@ from urllib.parse import urlparse
 import logging
 import re
 
+import resources
 import util
 
 URL_REGEX = r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
@@ -43,6 +44,25 @@ class URLModerator(util.Listener):
         log.info('detected scam URL in message, deleting', msg.content)
         await self.client.delete_message(msg)
         notice = await self.client.send_message(msg.channel, '_A message that contained a suspicious URL was deleted._')
+        await asyncio.sleep(10)
+        await self.client.delete_message(notice)
+        return
+
+
+@util.listenerfinder.register
+class AddressDeletor(util.Listener):
+
+    def is_triggered_message(self, msg: discord.Message):
+        if msg.author.id in resources.ETH_WHITELIST:
+            log.debug('message from person on crypto address whitelist')
+            return False
+        if re.search(r'[0-9a-f]{38,45}', msg.content):
+            return True
+
+    async def on_message(self, msg: discord.Message):
+        log.info('detected potential scam address in message, deleting', msg.content)
+        await self.client.delete_message(msg)
+        notice = await self.client.send_message(msg.channel, '_A message that contained a crypto address was deleted._')
         await asyncio.sleep(10)
         await self.client.delete_message(notice)
         return
