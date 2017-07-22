@@ -28,7 +28,7 @@ class GetUrlsTask(util.ScheduledTask):
             response = requests.get(URL_SOURCE)
             content = response.content.decode()
             GetUrlsTask.blacklist = re.findall(r'"id": ?"(.+)"', content)  # because it errors with proper json.loads...
-            log.debug('updated blacklist: ', GetUrlsTask.blacklist)
+            #log.debug('updated blacklist: ', GetUrlsTask.blacklist)
             await asyncio.sleep(UPDATE_PERIOD)
 
 
