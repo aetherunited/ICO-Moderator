@@ -43,17 +43,17 @@ class URLModerator(util.Listener):
         for match in re.finditer(URL_REGEX, msg.content):
             url = match.string
             log.debug('deep scanning url %s', url)
-            for _ in range(0, REDIRECT_LAYERS):
+            for layer in range(0, REDIRECT_LAYERS):
                 try:
-                    redirect = requests.head(match.string).headers.get('location')
+                    redirect = requests.head(url).headers.get('location')
                     if redirect is None or redirect == url:
-                        log.debug('... does not redirect')
+                        log.debug('... %s: does not redirect', layer)
                         break
                     if any(blacklist_url in redirect for blacklist_url in GetUrlsTask.blacklist):
-                        log.info('... redirects to %s, a scam url', redirect)
+                        log.info('... %s: redirects to %s, a scam url', layer, redirect)
                         return True
                     else:
-                        log.debug('... redirects to %s', redirect)
+                        log.debug('... %s: redirects to %s', layer, redirect)
                         url = redirect
                 except ConnectionError:
                     log.debug('could not connect to %s, skipping', url)
