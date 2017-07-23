@@ -6,7 +6,7 @@ import requests
 
 import util
 
-REDIRECT_LAYERS = 5
+REDIRECT_LAYERS = 3
 URL_REGEX = r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
 URL_SOURCE = 'https://raw.githubusercontent.com/MyEtherWallet/ethereum-lists/master/urls-darklist.json'
 UPDATE_PERIOD = 3600  # Every hour
@@ -46,10 +46,10 @@ class URLModerator(util.Listener):
             for _ in range(0, REDIRECT_LAYERS):
                 try:
                     redirect = requests.head(match.string).headers.get('location')
-                    if redirect is None:
+                    if redirect is None or redirect == url:
                         log.debug('... does not redirect')
                         break
-                    if any(blacklist in redirect for blacklist in blacklist_url):
+                    if any(blacklist_url in redirect for blacklist_url in GetUrlsTask.blacklist):
                         log.info('... redirects to %s, a scam url', redirect)
                         return True
                     else:
