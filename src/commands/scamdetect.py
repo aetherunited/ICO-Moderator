@@ -1,12 +1,12 @@
 import asyncio
 import logging
 import re
-
 import discord
 import requests
 
 import util
 
+REDIRECT_LAYERS = 3
 URL_REGEX = r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
 URL_SOURCE = 'https://raw.githubusercontent.com/MyEtherWallet/ethereum-lists/master/urls-darklist.json'
 UPDATE_PERIOD = 3600  # Every hour
@@ -25,7 +25,7 @@ class GetUrlsTask(util.ScheduledTask):
             response = requests.get(URL_SOURCE)
             content = response.content.decode()
             GetUrlsTask.blacklist = re.findall(r'"id": ?"(.+)"', content)  # because it errors with proper json.loads...
-            #log.debug('updated blacklist: ', GetUrlsTask.blacklist)
+            log.debug('updated blacklist: ', GetUrlsTask.blacklist)
             await asyncio.sleep(UPDATE_PERIOD)
 
 
@@ -33,12 +33,35 @@ class GetUrlsTask(util.ScheduledTask):
 class URLModerator(util.Listener):
 
     def is_triggered_message(self, msg: discord.Message):
+        # Cursory scan
         for blacklist_url in GetUrlsTask.blacklist:
-            if re.search(r'{}\b'.format(blacklist_url), msg.content, flags=re.IGNORECASE):
+            if re.search(r'\b{}\b'.format(blacklist_url), msg.content, flags=re.IGNORECASE):
+                log.info('detected scam URL (%s) in message, deleting %s', blacklist_url, msg.content)
                 return True
 
+        # Deep scan
+        for match in re.finditer(URL_REGEX, msg.content):
+            url = match.string
+            log.debug('deep scanning url %s', url)
+            for layer in range(0, REDIRECT_LAYERS):
+                try:
+                    redirect = requests.head(url).headers.get('location')
+                    if redirect is None or redirect == url:
+                        log.debug('... %s: does not redirect', layer)
+                        break
+                    if any(blacklist_url in redirect for blacklist_url in GetUrlsTask.blacklist):
+                        log.info('... %s: redirects to %s, a scam url', layer, redirect)
+                        return True
+                    else:
+                        log.debug('... %s: redirects to %s', layer, redirect)
+                        url = redirect
+                except ConnectionError:
+                    log.debug('could not connect to %s, skipping', url)
+                    break
+
+        return False
+
     async def on_message(self, msg: discord.Message):
-        log.info('detected scam URL in message, deleting', msg.content)
         await self.client.delete_message(msg)
         notice = await self.client.send_message(msg.channel, '_A message from {} that contained a suspicious URL was deleted._'.format(msg.author.mention))
         await asyncio.sleep(10)
