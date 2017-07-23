@@ -4,7 +4,7 @@ A moderator for Ethereum ICOs using Discord as a communications platform. It act
 
 ##Usage
 
-- Whenever someone posts a URL listed on the [blacklist found here](https://raw.githubusercontent.com/MyEtherWallet/ethereum-lists/master/urls-darklist.json), the bot will delete the message.
+- Whenever someone posts a URL listed on the [blacklist found here](https://raw.githubusercontent.com/MyEtherWallet/ethereum-lists/master/urls-darklist.json), or any link that redirects to the blacklist including most URL shorteners,, the bot will delete the message.
 - Whenever someone posts a 40-digit hexadecimal string (in other words, an Ethereum address), that message will be deleted unless the person is part of a role named `addressannouncer`.
 
 ---
