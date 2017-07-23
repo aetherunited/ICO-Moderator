@@ -34,11 +34,11 @@ class URLModerator(util.Listener):
 
     def is_triggered_message(self, msg: discord.Message):
         for blacklist_url in GetUrlsTask.blacklist:
-            if re.search(r'{}\b'.format(blacklist_url), msg.content, flags=re.IGNORECASE):
+            if re.search(r'\b{}\b'.format(blacklist_url), msg.content, flags=re.IGNORECASE):
+                log.info('detected scam URL (%s) in message, deleting %s', blacklist_url, msg.content)
                 return True
 
     async def on_message(self, msg: discord.Message):
-        log.info('detected scam URL in message, deleting', msg.content)
         await self.client.delete_message(msg)
         notice = await self.client.send_message(msg.channel, '_A message from {} that contained a suspicious URL was deleted._'.format(msg.author.mention))
         await asyncio.sleep(10)
